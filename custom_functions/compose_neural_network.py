@@ -7,11 +7,6 @@ of a neural network model for comparison across differing criteria.
 
 # Imports
 import pandas as pd
-import tensorflow as tf
-from pathlib import Path
-from tensorflow.keras.layers import Dense
-from tensorflow.keras.models import Sequential
-from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 
 def encode_categorical_variables(nn_data,debug=False):
