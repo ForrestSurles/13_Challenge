@@ -14,7 +14,7 @@ from tensorflow.keras.models import Sequential
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 
-def encode_categorical_variables(nn_data):
+def encode_categorical_variables(nn_data,debug=False):
     """Encode categorical variables for neural network model.
 
     Encode neural network model categorical variables,
@@ -27,8 +27,6 @@ def encode_categorical_variables(nn_data):
         New DataFrame with encoded categorical variables
 
     """
-
-    debug = True
 
     # 'categorical variables' = datatype 'object' (strings)
     categorical_variables = list(
@@ -67,7 +65,7 @@ def encode_categorical_variables(nn_data):
     return combined_encoded_df
 
 
-def create_features_and_target(enc_data,target_name):
+def create_features_and_target(enc_data,target_name,debug=False):
     """Define encoded DataFrame features and target.
 
     This function accepts a single string for target_name
@@ -82,3 +80,10 @@ def create_features_and_target(enc_data,target_name):
         X, y (list of DataFrames): Feature and target datasets
 
     """
+
+    y = enc_data[target_name]
+    X = enc_data.drop(columns=[target_name])
+
+    if debug: print(f'Target Dataset (y):\n{y}')
+    if debug: print(f'Features Dataset:\n{X}')
+
