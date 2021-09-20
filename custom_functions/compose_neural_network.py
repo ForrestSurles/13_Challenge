@@ -21,10 +21,10 @@ def encode_categorical_variables(nn_data):
     and combine with numerical variables into a new DataFrame.
 
     Args:
-        nn_data (DataFrame): The dataset for the neural net
+        nn_data (DataFrame): Dataset for the neural net model
 
     Returns:
-        A new DataFrame with properly encoded categorical variables
+        New DataFrame with encoded categorical variables
 
     """
 
@@ -67,5 +67,18 @@ def encode_categorical_variables(nn_data):
     return combined_encoded_df
 
 
-def concat_numerical_categorical_data(nn_data,cat_var_list):
+def create_features_and_target(enc_data,target_name):
+    """Define encoded DataFrame features and target.
 
+    This function accepts a single string for target_name
+    to assign to the target dataset and assigns all remaining
+    columns to the features dataset. 
+
+    Args:
+        enc_data (DataFrame): Preprocess data for the neural net model
+        target_name (string): Name of the column for target set (y)
+
+    Returns:
+        X, y (list of DataFrames): Feature and target datasets
+
+    """
