@@ -31,6 +31,16 @@ def encode_categorical_variables(nn_data):
         ].index
     )
 
-    # display the categorical variables list
     print(categorical_variables)
-    return categorical_variables
+    
+    enc = OneHotEncoder(sparse=False)
+    encoded_data = enc.fit_transform(nn_data[categorical_variables])
+    encoded_df = pd.DataFrame(
+        encoded_data,
+        columns = enc.get_feature_names(categorical_variables)
+    )
+
+    print(f'encoded_df datatypes:\n{encoded_df.dtypes}')
+    print(f'encoded_df data:\n{encoded_df}')
+
+
