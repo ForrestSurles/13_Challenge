@@ -30,7 +30,7 @@ def encode_categorical_variables(nn_data,debug=False):
         ].index
     )
 
-    if debug: print(categorical_variables)
+    if debug: print(f'categorical_variables:\n{categorical_variables}\n')
     
     enc = OneHotEncoder(sparse=False)
     encoded_data = enc.fit_transform(nn_data[categorical_variables])
@@ -39,8 +39,10 @@ def encode_categorical_variables(nn_data,debug=False):
         columns = enc.get_feature_names(categorical_variables)
     )
 
-    if debug: print(f'encoded_df datatypes:\n{encoded_df.dtypes}')
-    if debug: print(f'encoded_df data:\n{encoded_df}')
+    print(f'Categorical Variables:\n{categorical_variables}\n')
+
+    if debug: print(f'\nencoded_df datatypes:\n{encoded_df.dtypes}\n')
+    if debug: print(f'encoded_df data:\n{encoded_df}\n')
 
     numerical_variables_df = nn_data.drop(columns=categorical_variables)
 
@@ -57,6 +59,8 @@ def encode_categorical_variables(nn_data,debug=False):
 
     if debug: print(f'combined_encoded_df:\n{combined_encoded_df}')
 
+    print(f'Combined Encoded DataFrame:\n{combined_encoded_df}')
+
     return combined_encoded_df
 
 
@@ -72,13 +76,39 @@ def create_features_and_target(enc_data,target_name,debug=False):
         target_name (string): Name of the column for target set (y)
 
     Returns:
-        X, y (list of DataFrames): Feature and target datasets
+        features, target (DataFrame(s)): Feature and target datasets
 
     """
 
-    y = enc_data[target_name]
-    X = enc_data.drop(columns=[target_name])
+    target = enc_data[target_name]
+    features = enc_data.drop(columns=[target_name])
 
-    if debug: print(f'Target Dataset (y):\n{y}')
-    if debug: print(f'Features Dataset:\n{X}')
+    if debug: print(f'Target Dataset (y):\n{target}\n')
+    if debug: print(f'Features Dataset:\n{features}')
 
+    return target, features
+
+def scale_features_data(X_train, X_test):
+    """Fit a StandardScaler instance and fit
+    to features training dataset.
+
+    Args:
+        X_train (DataFrame): Features used to fit the scaler
+        X_test  (DataFrame): Features used to test the neural net
+    
+    Returns:
+        X_train_scaled (Array): Scaled training features dataset
+        X_test_scaled (Array): Scaled testing features dataset
+
+    """
+
+    scaler = StandardScaler()
+
+    # Fit the scaler to the features training dataset
+    X_scaler = scaler.fit(X_train)
+
+    # Scale 'X_train' and 'X_test' datasets to the fit X_scaler
+    X_train_scaled = X_scaler.transform(X_train)
+    X_test_scaled = X_scaler.transform(X_test)
+
+    return X_train_scaled, X_test_scaled
