@@ -7,7 +7,11 @@ of a neural network model for comparison across differing criteria.
 
 # Imports
 import pandas as pd
+import tensorflow as tf
+from tensorflow.keras.layers import Dense
+from tensorflow.keras.models import Sequential
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
+
 
 def encode_categorical_variables(nn_data,debug=False):
     """Encode categorical variables for neural network model.
@@ -20,10 +24,8 @@ def encode_categorical_variables(nn_data,debug=False):
 
     Returns:
         New DataFrame with encoded categorical variables
-
     """
-
-    # 'categorical variables' = datatype 'object' (strings)
+    # 'categorical variables' are of datatype 'object' (strings)
     categorical_variables = list(
         nn_data.dtypes[
             nn_data.dtypes == 'object'
@@ -77,9 +79,7 @@ def create_features_and_target(enc_data,target_name,debug=False):
 
     Returns:
         features, target (DataFrame(s)): Feature and target datasets
-
     """
-
     target = enc_data[target_name]
     features = enc_data.drop(columns=[target_name])
 
@@ -99,9 +99,7 @@ def scale_features_data(X_train, X_test):
     Returns:
         X_train_scaled (Array): Scaled training features dataset
         X_test_scaled (Array): Scaled testing features dataset
-
     """
-
     scaler = StandardScaler()
 
     # Fit the scaler to the features training dataset
@@ -112,3 +110,48 @@ def scale_features_data(X_train, X_test):
     X_test_scaled = X_scaler.transform(X_test)
 
     return X_train_scaled, X_test_scaled
+
+def binary_class_neural_net(
+        number_input_features,
+        hidden_node_layers,
+        output_layer_activation):
+    """Generate, populate, and run a
+    binary classification neural network model.
+
+    Args:
+        number_input_features (Int): Number of inputs to the model
+        hidden_node_layers (List of Lists): Number of hidden node layers
+        output_layer_activation (Str): Output layer activation function
+
+    Returns:
+        neural_net (Object): The compiled model ready to be fit
+    """
+    nn = Sequential()
+
+    # Add desired number of hidden node layers
+    for idx, hidden_node_layer in enumerate(hidden_node_layers):
+        if idx == 0:
+            nn.add(Dense(
+                units=hidden_node_layer[0],
+                input_dim=number_input_features,
+                activation=hidden_node_layer[1]
+                )
+            )
+        else:
+            nn.add(Dense(
+                units=hidden_node_layer[0],
+                activation=hidden_node_layer[1]
+                )
+            )
+    
+    # Add the output layer
+    nn.add(Dense(
+        units=1,
+        activation=output_layer_activation
+        )
+    )
+
+    print(f'Neural Network Model Summary:\n{nn.summary()}')
+
+    return nn
+    
