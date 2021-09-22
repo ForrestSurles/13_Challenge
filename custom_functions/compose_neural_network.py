@@ -151,12 +151,12 @@ def binary_class_neural_net(
         )
     )
 
-    print(f'Neural Network Model Summary:\n{nn.summary()}')
-
     nn.compile(
         loss='binary_crossentropy',
         optimizer='adam',
         metrics=['accuracy']
     )
 
+    nn.summary()
+    
     return nn
