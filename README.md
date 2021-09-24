@@ -22,6 +22,10 @@ Instructions for installing anaconda may be found [here](https://www.anaconda.co
 
 ## <font color=OrangeRed>Example</font>
 
+Once the jupyter notebook is open, the results of the models will appear similar to the example image:
+
+<img src='./model_results.png' width='700px'/>
+
 ## <font color=OrangeRed>Usage</font>
 
 Once the necessary modules/libraries have been installed, launch the Jupyter Lab either via the command line or from within an IDE capable of opening the `.ipynb` file extension.
